@@ -40,7 +40,7 @@ public class SimpleCamelRouteSpringBootTests {
     }
 
     @Test
-    public void moveFile() throws InterruptedException {
+    public void moveFile_ADD() throws InterruptedException {
         assertEquals(ServiceStatus.Started, camelContext.getStatus());
 
         String body = "type,sku#,item_description,price\n" + "UPDATE,200,Samsung TV,500\n" + "UPDATE,201,LG TV,400";
