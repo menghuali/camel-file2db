@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<camel-version>${camel-version}</camel-version>
+		<camel-version>3.7.0</camel-version>
 	</properties>
 
 	<dependencies>

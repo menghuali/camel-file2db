@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class DbConfig {
 
     @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "datasource")
     public DataSource dataSource() {
         DataSource ds = DataSourceBuilder.create().build();
         return ds;

@@ -27,7 +27,7 @@ public class BuildSQLProcessor implements Processor {
             default:
                 break;
         }
-        log.info("The query is: ", query);
+        log.info("The query is: {}", query);
         exchange.getIn().setBody(query);
     }
 

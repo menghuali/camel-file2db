@@ -43,7 +43,7 @@ public class SimpleCamelRouteSpringBootTests {
     public void moveFile_ADD() throws InterruptedException {
         assertEquals(ServiceStatus.Started, camelContext.getStatus());
 
-        String body = "type,sku#,item_description,price\n" + "UPDATE,200,Samsung TV,500\n" + "UPDATE,201,LG TV,400";
+        String body = "type,sku#,item_description,price\n" + "ADD,200,Samsung TV,500\n" + "ADD,201,LG TV,400";
         String fileName = "fileTest.txt";
         producerTemplate.sendBodyAndHeader("file:data/input", body, Exchange.FILE_NAME, fileName);
         Thread.sleep(3000);
