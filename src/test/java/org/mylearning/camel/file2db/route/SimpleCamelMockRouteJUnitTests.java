@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.FileSystemUtils;
 
-public class SimpleCamelRouteJUnitTests extends CamelTestSupport {
+public class SimpleCamelMockRouteJUnitTests extends CamelTestSupport {
     private static Properties props;
 
     @BeforeAll
