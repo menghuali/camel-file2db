@@ -19,7 +19,8 @@ public class SimpleCamelRoute extends RouteBuilder {
         DataFormat dFormat = new BindyCsvDataFormat(Item.class);
         from("timer:hello?period={{poll_interval}}").log("Time invoked")
                 .pollEnrich("file:{{input_folder}}?delete=true&readLock=none").log("Body is: ${body}")
-                .to("file:{{output_folder}}").unmarshal(dFormat).log("Unmarshalled object is: ${body}");
+                .to("file:{{output_folder}}").unmarshal(dFormat).log("Unmarshalled object is: ${body}").split(body())
+                .log("Record is: ${body}").end();
     }
 
 }
