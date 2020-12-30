@@ -80,6 +80,13 @@
 			<version>42.2.18</version>
 		</dependency>
 
+		<!-- H2 database for unit test -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
