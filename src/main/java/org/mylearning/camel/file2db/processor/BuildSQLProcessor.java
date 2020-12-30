@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Component("buildSQLProcessor")
 @Slf4j
 public class BuildSQLProcessor implements Processor {
@@ -23,9 +22,14 @@ public class BuildSQLProcessor implements Processor {
                         item.getSku(), item.getItemDescription(), item.getPrice().toString());
                 break;
             case "UPDATE":
-            case "DELETE":
-            default:
+                query = String.format("UPDATE ITEMS SET PRICE = %s WHERE SKU = '%s'", item.getPrice().toString(),
+                        item.getSku());
                 break;
+            case "DELETE":
+                query = String.format("DELETE FROM ITEMS WHERE SKU = '%s'", item.getSku());
+                break;
+            default:
+                throw new UnsupportedOperationException(item.getTransactionType());
         }
         log.info("The query is: {}", query);
         exchange.getIn().setBody(query);
