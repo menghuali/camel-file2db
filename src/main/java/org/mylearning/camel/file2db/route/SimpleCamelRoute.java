@@ -1,7 +1,5 @@
 package org.mylearning.camel.file2db.route;
 
-import javax.sql.DataSource;
-
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
@@ -17,12 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SimpleCamelRoute extends RouteBuilder {
 
-    @Qualifier("dataSource")
-    @Autowired
-    private DataSource dataSource;
-
-    @Qualifier("buildSQLProcessor")
-    @Autowired
     private Processor buildSQLProcessor;
 
     @Override
@@ -34,6 +26,12 @@ public class SimpleCamelRoute extends RouteBuilder {
                 .pollEnrich("file:{{input_folder}}?delete=true&readLock=none").log("Body is: ${body}")
                 .to("file:{{output_folder}}").unmarshal(dFormat).log("Unmarshalled object is: ${body}").split(body())
                 .log("Record is: ${body}").process(buildSQLProcessor).to("jdbc:dataSource").end();
+    }
+
+    @Qualifier("buildSQLProcessor")
+    @Autowired
+    public void setBuildSQLProcessor(Processor buildSQLProcessor) {
+        this.buildSQLProcessor = buildSQLProcessor;
     }
 
 }
