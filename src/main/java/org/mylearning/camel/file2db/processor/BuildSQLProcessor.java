@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.mylearning.camel.file2db.domain.Item;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,10 @@ public class BuildSQLProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         Item item = (Item) exchange.getIn().getBody();
         log.info("Item is {}", item);
+
+        if (!StringUtils.hasText(item.getSku()))
+            throw new DataException("Sku is null for " + item.getItemDescription());
+
         String query = null;
         switch (item.getTransactionType()) {
             case "ADD":

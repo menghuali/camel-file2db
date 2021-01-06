@@ -79,4 +79,16 @@ public class SimpleCamelRouteSpringBootTests {
         assertTrue(Files.exists(Path.of("data", "output", fileName)));
     }
 
+    @Test
+    @Order(4)
+    public void moveFile_ADD_Exception() throws InterruptedException {
+        assertEquals(ServiceStatus.Started, camelContext.getStatus());
+
+        String body = "type,sku#,item_description,price\n" + "ADD,,Samsung TV,500";
+        String fileName = "fileTest.txt";
+        producerTemplate.sendBodyAndHeader("file:data/input", body, Exchange.FILE_NAME, fileName);
+        Thread.sleep(3000);
+        assertTrue(Files.exists(Path.of("data", "output", fileName)));
+    }
+
 }
