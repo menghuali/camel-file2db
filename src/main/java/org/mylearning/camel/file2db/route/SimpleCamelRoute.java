@@ -28,7 +28,9 @@ public class SimpleCamelRoute extends RouteBuilder {
         // errorHandler(deadLetterChannel("log:errorInRoute?level=ERROR&showProperties=true").maximumRedeliveries(3)
         // .redeliveryDelay(3000).backOffMultiplier(2).retryAttemptedLogLevel(LoggingLevel.ERROR));
 
-        onException(DataException.class).log(LoggingLevel.ERROR, "DataException is: ${body}").process(mailProcessor);
+        onException(DataException.class).log(LoggingLevel.ERROR, "DataException is: ${body}").doTry()
+                .setHeader("subject", simple("Exception in Camel Route (DSL)"))
+                .to("smtp://smtp.gmail.com:587?username=aloha928272@gmail.com&password=p@ssw0rd&from=aloha928272@gmail.com&to=menghua.li.1980@gmail.com&mail.smtp.auth=true&mail.smtp.starttls.enable=true");
         onException(PSQLException.class).log(LoggingLevel.ERROR, "PSQLException is: ${body}").maximumRedeliveries(2)
                 .redeliveryDelay(3000).backOffMultiplier(2).retryAttemptedLogLevel(LoggingLevel.ERROR)
                 .process(mailProcessor);
