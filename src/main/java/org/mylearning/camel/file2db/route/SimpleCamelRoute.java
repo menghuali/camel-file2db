@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SimpleCamelRoute extends RouteBuilder {
 
     private Processor buildSQLProcessor;
+    private Processor mailProcessor;
 
     @Override
     public void configure() throws Exception {
@@ -27,9 +28,10 @@ public class SimpleCamelRoute extends RouteBuilder {
         // errorHandler(deadLetterChannel("log:errorInRoute?level=ERROR&showProperties=true").maximumRedeliveries(3)
         // .redeliveryDelay(3000).backOffMultiplier(2).retryAttemptedLogLevel(LoggingLevel.ERROR));
 
-        onException(DataException.class).log(LoggingLevel.ERROR, "DataException is: ${body}");
+        onException(DataException.class).log(LoggingLevel.ERROR, "DataException is: ${body}").process(mailProcessor);
         onException(PSQLException.class).log(LoggingLevel.ERROR, "PSQLException is: ${body}").maximumRedeliveries(2)
-                .redeliveryDelay(3000).backOffMultiplier(2).retryAttemptedLogLevel(LoggingLevel.ERROR);
+                .redeliveryDelay(3000).backOffMultiplier(2).retryAttemptedLogLevel(LoggingLevel.ERROR)
+                .process(mailProcessor);
 
         DataFormat dFormat = new BindyCsvDataFormat(Item.class);
         from("timer:hello?period={{poll_interval}}").log("Time invoked")
@@ -42,6 +44,12 @@ public class SimpleCamelRoute extends RouteBuilder {
     @Autowired
     public void setBuildSQLProcessor(Processor buildSQLProcessor) {
         this.buildSQLProcessor = buildSQLProcessor;
+    }
+
+    @Qualifier("mailProcessor")
+    @Autowired
+    public void setMailProcessor(Processor mailProcessor) {
+        this.mailProcessor = mailProcessor;
     }
 
 }

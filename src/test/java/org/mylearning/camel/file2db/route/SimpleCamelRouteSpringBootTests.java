@@ -87,7 +87,7 @@ public class SimpleCamelRouteSpringBootTests {
         String body = "type,sku#,item_description,price\n" + "ADD,,Samsung TV,500";
         String fileName = "fileTest.txt";
         producerTemplate.sendBodyAndHeader("file:data/input", body, Exchange.FILE_NAME, fileName);
-        Thread.sleep(3000);
+        Thread.sleep(10000);
         assertTrue(Files.exists(Path.of("data", "output", fileName)));
     }
 
